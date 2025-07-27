@@ -19,7 +19,7 @@ def get_main_keyboard() -> InlineKeyboardMarkup:
             [
                 InlineKeyboardButton(
                     text="Меню",
-                    web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/menu?v=3")
+                    web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/menu")
                 )
             ]
         ]
