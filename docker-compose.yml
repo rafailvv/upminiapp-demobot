@@ -10,8 +10,6 @@ services:
       - DOMAIN=${DOMAIN}
     env_file:
       - .env
-    volumes:
-      - ./logs:/app/logs
     networks:
       - bot-network
 

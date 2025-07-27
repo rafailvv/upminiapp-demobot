@@ -14,10 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Создаем пользователя для безопасности
-RUN useradd --create-home --shell /bin/bash bot
-
-# Создаем директорию для логов и устанавливаем права
-RUN mkdir -p /app/logs && \
+RUN useradd --create-home --shell /bin/bash bot && \
     chown -R bot:bot /app
 
 USER bot

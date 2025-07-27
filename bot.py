@@ -6,18 +6,9 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import BOT_TOKEN, DOMAIN
 
 # Настройка логирования
-import os
-
-# Создаем директорию для логов если её нет
-os.makedirs('logs', exist_ok=True)
-
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/bot.log'),
-        logging.StreamHandler()
-    ]
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
 # Инициализация бота и диспетчера

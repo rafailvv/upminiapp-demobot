@@ -52,5 +52,4 @@ docker-compose.yml
 README.md
 
 # Logs
-logs/
 *.log 
