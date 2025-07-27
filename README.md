@@ -34,8 +34,38 @@ cp env.example .env
 
 ## Запуск
 
+### Локальный запуск
+
 ```bash
 python bot.py
+```
+
+### Запуск через Docker
+
+1. Убедитесь, что у вас установлены Docker и Docker Compose
+
+2. Создайте файл `.env` на основе `env.example`:
+```bash
+cp env.example .env
+```
+
+3. Отредактируйте файл `.env` и добавьте:
+   - `BOT_TOKEN` - токен вашего телеграм бота (получите у @BotFather)
+   - `DOMAIN` - домен для ваших мини-приложений
+
+4. Запустите бота через Docker Compose:
+```bash
+docker-compose up --build
+```
+
+5. Для запуска в фоновом режиме:
+```bash
+docker-compose up -d --build
+```
+
+6. Для остановки:
+```bash
+docker-compose down
 ```
 
 ## Функциональность
@@ -54,6 +84,9 @@ upminiapp-demobot/
 ├── .env               # Переменные окружения (создается пользователем)
 ├── env.example        # Пример файла переменных окружения
 ├── .gitignore         # Исключения для Git
+├── Dockerfile         # Docker образ
+├── docker-compose.yml # Docker Compose конфигурация
+├── .dockerignore      # Исключения для Docker
 └── README.md          # Документация
 ```
 
