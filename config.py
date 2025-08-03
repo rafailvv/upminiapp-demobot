@@ -11,7 +11,7 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 DOMAIN = os.getenv('DOMAIN')
 
 # Получаем тестовый домен для мини-приложений
-DOMAIN_TEST = os.getenv('DOMAIN')
+DOMAIN_TEST = os.getenv('DOMAIN_TEST')
 
 # Проверяем, что необходимые переменные установлены
 if not BOT_TOKEN:
