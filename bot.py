@@ -3,7 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from config import BOT_TOKEN, DOMAIN
+from config import BOT_TOKEN, DOMAIN, DOMAIN_TEST
 
 # Настройка логирования
 logging.basicConfig(
@@ -29,6 +29,20 @@ def get_main_keyboard() -> InlineKeyboardMarkup:
     )
     return keyboard
 
+# Создание клавиатуры с кнопкой для мини-приложения
+def get_test_keyboard() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="Меню тестовое",
+                    web_app=types.WebAppInfo(url=f"{DOMAIN_TEST}/miniapp/menu")
+                )
+            ]
+        ]
+    )
+    return keyboard
+
 # Обработчик команды /start
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
@@ -37,6 +51,16 @@ async def cmd_start(message: types.Message):
     await message.answer(
         text=welcome_text,
         reply_markup=get_main_keyboard()
+    )
+
+# Обработчик команды /test
+@dp.message(Command("test"))
+async def cmd_start(message: types.Message):
+    welcome_text = "Тестовый демо-приложения"
+
+    await message.answer(
+        text=welcome_text,
+        reply_markup=get_test_keyboard()
     )
 
 # Обработчик для всех остальных сообщений

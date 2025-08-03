@@ -10,9 +10,15 @@ BOT_TOKEN = os.getenv('BOT_TOKEN')
 # Получаем домен для мини-приложений
 DOMAIN = os.getenv('DOMAIN')
 
+# Получаем тестовый домен для мини-приложений
+DOMAIN_TEST = os.getenv('DOMAIN')
+
 # Проверяем, что необходимые переменные установлены
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN не установлен в .env файле")
 
 if not DOMAIN:
-    raise ValueError("DOMAIN не установлен в .env файле") 
+    raise ValueError("DOMAIN не установлен в .env файле")
+
+if not DOMAIN_TEST:
+    raise ValueError("DOMAIN_TEST не установлен в .env файле")
