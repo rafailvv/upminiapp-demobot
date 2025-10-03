@@ -36,7 +36,7 @@ def get_main_keyboard() -> InlineKeyboardMarkup:
                 ),
                 InlineKeyboardButton(
                     text="Запись на консультацию",
-                    web_app=types.WebAppInfo(url=f"{DOMAIN}/consultations")
+                    web_app=types.WebAppInfo(url=f"{DOMAIN}/consultations?id=4e08b859-f884-40ea-b3fe-636f0b7e6bb2")
                 )
             ],
             [
