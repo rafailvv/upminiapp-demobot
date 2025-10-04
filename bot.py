@@ -2,7 +2,7 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from config import BOT_TOKEN, DOMAIN, DOMAIN_TEST
 
 # Настройка логирования
@@ -15,8 +15,34 @@ logging.basicConfig(
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
-# Создание клавиатуры с кнопкой для мини-приложения
+# Создание главной клавиатуры
 def get_main_keyboard() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="Меню",
+                    callback_data="menu"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Запись на консультацию",
+                    web_app=types.WebAppInfo(url=f"{DOMAIN}/consultations/?id=4e08b859-f884-40ea-b3fe-636f0b7e6bb2")
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="Спорт и питание",
+                    web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/sport-nutrition")
+                )
+            ]
+        ]
+    )
+    return keyboard
+
+# Создание клавиатуры для меню магазинов
+def get_menu_keyboard() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
@@ -33,16 +59,12 @@ def get_main_keyboard() -> InlineKeyboardMarkup:
                 InlineKeyboardButton(
                     text="Книжный магазин",
                     web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/books_store")
-                ),
-                InlineKeyboardButton(
-                    text="Запись на консультацию",
-                    web_app=types.WebAppInfo(url=f"{DOMAIN}/consultations/?id=4e08b859-f884-40ea-b3fe-636f0b7e6bb2")
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text="Спорт и питание",
-                    web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/sport-nutrition")
+                    text="← Назад",
+                    callback_data="back_to_main"
                 )
             ]
         ]
@@ -81,6 +103,24 @@ async def cmd_start(message: types.Message):
     await message.answer(
         text=welcome_text,
         reply_markup=get_test_keyboard()
+    )
+
+# Обработчик для callback-кнопки "Меню"
+@dp.callback_query(lambda c: c.data == "menu")
+async def process_menu_callback(callback_query: CallbackQuery):
+    await callback_query.answer()
+    await callback_query.message.edit_text(
+        text="Выберите магазин:",
+        reply_markup=get_menu_keyboard()
+    )
+
+# Обработчик для callback-кнопки "Назад"
+@dp.callback_query(lambda c: c.data == "back_to_main")
+async def process_back_callback(callback_query: CallbackQuery):
+    await callback_query.answer()
+    await callback_query.message.edit_text(
+        text="Демо-бот конструктора телеграм-мини апп",
+        reply_markup=get_main_keyboard()
     )
 
 # Обработчик для всех остальных сообщений
