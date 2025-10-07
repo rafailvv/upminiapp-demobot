@@ -87,15 +87,47 @@ def get_test_keyboard() -> InlineKeyboardMarkup:
     )
     return keyboard
 
+# Создание клавиатуры для cust_dev
+def get_cust_dev_keyboard() -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text="Заполнить анкету",
+                    web_app=types.WebAppInfo(url=f"{DOMAIN_TEST}/miniapp/cust_dev")
+                )
+            ]
+        ]
+    )
+    return keyboard
+
 # Обработчик команды /start
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
-    welcome_text = "Демо-бот конструктора телеграм-мини апп"
+    # Проверяем, есть ли параметры в команде
+    command_args = message.text.split()
     
-    await message.answer(
-        text=welcome_text,
-        reply_markup=get_main_keyboard()
-    )
+    if len(command_args) > 1 and command_args[1] == "cust_dev":
+        # Специальное сообщение для cust_dev
+        welcome_text = """👋 Мы команда Upmini.app — создаём автоматизированное решение в Telegram с мини-приложениями для экспертов и малого бизнеса.
+Нам важно понять, как вы работаете с клиентами, чтобы сделать инструмент, который действительно экономит время и помогает зарабатывать.
+
+Заполнение займёт не больше 5–7 минут.
+
+По итогам — участники получат ранний доступ и готовое решение под свои задачи."""
+        
+        await message.answer(
+            text=welcome_text,
+            reply_markup=get_cust_dev_keyboard()
+        )
+    else:
+        # Обычное приветственное сообщение
+        welcome_text = "Демо-бот конструктора Telegram мини-приложений от команды Upmini.app"
+        
+        await message.answer(
+            text=welcome_text,
+            reply_markup=get_main_keyboard()
+        )
 
 # Обработчик команды /test
 @dp.message(Command("test"))
