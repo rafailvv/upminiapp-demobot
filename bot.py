@@ -4,6 +4,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
 from config import BOT_TOKEN, DOMAIN, DOMAIN_TEST
+from form_handler import handle_form_res_command
 
 # Настройка логирования
 logging.basicConfig(
@@ -14,6 +15,7 @@ logging.basicConfig(
 # Инициализация бота и диспетчера
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
+
 
 # Создание главной клавиатуры
 def get_main_keyboard() -> InlineKeyboardMarkup:
@@ -104,6 +106,12 @@ async def cmd_start(message: types.Message):
         text=welcome_text,
         reply_markup=get_test_keyboard()
     )
+
+# Обработчик команды /form_res
+@dp.message(Command("form_res"))
+async def cmd_form_res(message: types.Message):
+    """Обработчик команды /form_res для получения ответов формы"""
+    await handle_form_res_command(message)
 
 # Обработчик для callback-кнопки "Меню"
 @dp.callback_query(lambda c: c.data == "menu")
