@@ -23,6 +23,17 @@ async def get_form_responses(form_id: str) -> dict:
         raise Exception(f"Ошибка при запросе к API: {str(e)}")
 
 
+# Функция для преобразования значений в строку
+def format_value_for_excel(value):
+    """Преобразует значение в строку для Excel, объединяя списки через запятую"""
+    if isinstance(value, list):
+        return ', '.join(str(item) for item in value)
+    elif value is None:
+        return ''
+    else:
+        return str(value)
+
+
 # Функция для генерации Excel файла с ответами
 def generate_excel_file(responses_data: dict, form_id: str) -> str:
     """Генерирует Excel файл с ответами формы"""
@@ -55,7 +66,8 @@ def generate_excel_file(responses_data: dict, form_id: str) -> str:
         response_data = response.get('response_data', {})
         for col, key in enumerate(all_keys, 4):
             value = response_data.get(key, '')  # Пустая ячейка если ключа нет
-            ws.cell(row=row, column=col, value=value)
+            formatted_value = format_value_for_excel(value)
+            ws.cell(row=row, column=col, value=formatted_value)
     
     # Автоподбор ширины колонок
     for column in ws.columns:
