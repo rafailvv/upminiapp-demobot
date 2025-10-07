@@ -94,7 +94,7 @@ def get_cust_dev_keyboard() -> InlineKeyboardMarkup:
             [
                 InlineKeyboardButton(
                     text="Заполнить анкету",
-                    web_app=types.WebAppInfo(url=f"{DOMAIN_TEST}/miniapp/cust_dev")
+                    web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/cust_dev")
                 )
             ]
         ]
