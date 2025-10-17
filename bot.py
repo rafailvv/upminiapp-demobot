@@ -25,9 +25,7 @@ def get_main_keyboard() -> InlineKeyboardMarkup:
                 InlineKeyboardButton(
                     text="Меню",
                     callback_data="menu"
-                )
-            ],
-            [
+                ),
                 InlineKeyboardButton(
                     text="Запись на консультацию",
                     web_app=types.WebAppInfo(url=f"{DOMAIN}/consultations/?id=4e08b859-f884-40ea-b3fe-636f0b7e6bb2")
@@ -37,6 +35,10 @@ def get_main_keyboard() -> InlineKeyboardMarkup:
                 InlineKeyboardButton(
                     text="Спорт и питание",
                     web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/sport-nutrition")
+                ),
+                InlineKeyboardButton(
+                    text="Квиз",
+                    web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/quiz")
                 )
             ]
         ]
