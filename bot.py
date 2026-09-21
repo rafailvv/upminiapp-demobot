@@ -3,8 +3,8 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, CallbackQuery
-from config import BOT_TOKEN, DOMAIN, DOMAIN_TEST
-from form_handler import handle_form_res_command
+from config import BOT_TOKEN, DOMAIN, DOMAIN_TEST, FORM_RES_OPERATOR_IDS
+from form_handler import POLICY_URL, handle_form_res_command
 
 # Настройка логирования
 logging.basicConfig(
@@ -40,7 +40,8 @@ def get_main_keyboard() -> InlineKeyboardMarkup:
                     text="Квиз",
                     web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/quiz")
                 )
-            ]
+            ],
+            [InlineKeyboardButton(text="Политика обработки персональных данных", url=POLICY_URL)]
         ]
     )
     return keyboard
@@ -89,6 +90,14 @@ def get_test_keyboard() -> InlineKeyboardMarkup:
     )
     return keyboard
 
+
+def get_privacy_keyboard() -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(text="Политика обработки персональных данных", url=POLICY_URL)]
+        ]
+    )
+
 # Создание клавиатуры для cust_dev
 def get_cust_dev_keyboard() -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(
@@ -98,7 +107,8 @@ def get_cust_dev_keyboard() -> InlineKeyboardMarkup:
                     text="Заполнить анкету",
                     web_app=types.WebAppInfo(url=f"{DOMAIN}/miniapp/cust_dev")
                 )
-            ]
+            ],
+            [InlineKeyboardButton(text="Политика обработки персональных данных", url=POLICY_URL)]
         ]
     )
     return keyboard
@@ -124,7 +134,10 @@ async def cmd_start(message: types.Message):
         )
     else:
         # Обычное приветственное сообщение
-        welcome_text = "Демо-бот конструктора Telegram мини-приложений от команды Upmini.app"
+        welcome_text = (
+            "Демо-бот конструктора Telegram мини-приложений от команды Upmini.app\n\n"
+            "Политика обработки персональных данных доступна по кнопке ниже."
+        )
         
         await message.answer(
             text=welcome_text,
@@ -145,7 +158,18 @@ async def cmd_start(message: types.Message):
 @dp.message(Command("form_res"))
 async def cmd_form_res(message: types.Message):
     """Обработчик команды /form_res для получения ответов формы"""
-    await handle_form_res_command(message)
+    await handle_form_res_command(message, FORM_RES_OPERATOR_IDS)
+
+
+@dp.message(Command("help"))
+async def cmd_help(message: types.Message):
+    await message.answer(
+        "Команды бота:\n"
+        "/start — открыть демо-меню\n"
+        "/help — справка и политика обработки персональных данных\n\n"
+        "Выгрузка ответов форм через /form_res доступна только настроенным операторам.",
+        reply_markup=get_privacy_keyboard(),
+    )
 
 # Обработчик для callback-кнопки "Меню"
 @dp.callback_query(lambda c: c.data == "menu")
@@ -179,4 +203,4 @@ async def main():
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
-    asyncio.run(main()) 
+    asyncio.run(main())
