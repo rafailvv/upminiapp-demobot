@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from access_control import parse_operator_ids
 
 # Загружаем переменные окружения из .env файла
 load_dotenv()
@@ -12,6 +13,9 @@ DOMAIN = os.getenv('DOMAIN')
 
 # Получаем тестовый домен для мини-приложений
 DOMAIN_TEST = os.getenv('DOMAIN_TEST')
+
+# Optional allowlist for exporting form responses. An empty or invalid value denies access.
+FORM_RES_OPERATOR_IDS = parse_operator_ids(os.getenv('FORM_RES_OPERATOR_IDS'))
 
 # Проверяем, что необходимые переменные установлены
 if not BOT_TOKEN:
